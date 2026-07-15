@@ -1,22 +1,64 @@
-<form [formGroup]="signupForm">
-  <h3 class="title">Sign Up</h3>
-  <mat-form-field appearance="outline">
-    <mat-label>Email</mat-label>
-    <input matInput type="email" placeholder="Enter your email" formControlName="email" />
-    @if (signupForm.get('email')?.errors?.['required'] && signupForm.get('email')?.touched) {
-      <mat-error>Email is required</mat-error>
-    }
-    @if (signupForm.get('email')?.errors?.['email'] && signupForm.get('email')?.touched) {
-      <mat-error>Please enter a valid email</mat-error>
-    }
-  </mat-form-field>
-  <mat-form-field appearance="outline">
-    <mat-label>Password</mat-label>
-    <input matInput type="password" placeholder="Enter your password" formControlName="password" />
-    @if (signupForm.get('password')?.errors?.['required'] && signupForm.get('password')?.touched) {
-      <mat-error>Password is required</mat-error>
-    }
-  </mat-form-field>
+<div class="signup-page">
+  <section class="hero" aria-hidden="true">
+    <p class="hero__eyebrow">New member</p>
+    <h1 class="hero__headline">Every rep<br />counts.</h1>
+    <p class="hero__sub">Log it. Track it. Beat yesterday.</p>
 
-  <button mat-raised-button type="submit">Sign Up</button>
-</form>
+    <svg class="hero__pulse" viewBox="0 0 400 80" preserveAspectRatio="none" focusable="false">
+      <path
+        class="hero__pulse-path"
+        d="M0,40 L90,40 L110,10 L130,70 L150,20 L170,40 L260,40 L280,15 L300,65 L320,40 L400,40"
+        fill="none"
+      />
+    </svg>
+
+    <ul class="hero__features">
+      <li>Track every workout</li>
+      <li>Watch your progress climb</li>
+      <li>Build a streak worth keeping</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <form class="panel__form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <p class="panel__eyebrow">Create account</p>
+      <h2 class="panel__title">Sign up</h2>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" placeholder="Enter your email" formControlName="email" />
+        <mat-error>{{ emailErrorMessage }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="password"
+          placeholder="Enter your password"
+          formControlName="password"
+        />
+        @if (password && password.value?.length < 6) {
+          <mat-hint>Should be at least 6 characters</mat-hint>
+        }
+        <mat-error>{{ passwordErrorMessage }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Date of Birth</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>{{ dateOfBirthErrorMessage }}</mat-error>
+      </mat-form-field>
+
+      <div class="terms-field">
+        <mat-checkbox formControlName="terms">I agree to the terms and conditions</mat-checkbox>
+        <mat-error>{{ termsErrorMessage }}</mat-error>
+      </div>
+
+      <button class="panel__submit" mat-raised-button type="submit">Create account</button>
+    </form>
+  </section>
+</div>
